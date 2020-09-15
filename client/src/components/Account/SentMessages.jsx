@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 import moment from 'moment-timezone';
 
 moment.tz.setDefault('Europe/Vienna');
@@ -54,7 +55,7 @@ class SentMessages extends Component {
             <div className="red-stripe" />
             <p style={{ display: 'inline-block' }}>
               {message.pub_date} 
-              {' '}<a href={`/na/${this.state.userId}#${message._id}`} className="traveller-message-link" title="odkaz na správu">🔗</a>
+              {' '}<Link to={`/na/${this.state.userId}#${message._id}`} className="traveller-message-link" title="odkaz na správu">🔗</Link>
             </p>            
             <p dangerouslySetInnerHTML={{ __html: message.text }} />
           </div>

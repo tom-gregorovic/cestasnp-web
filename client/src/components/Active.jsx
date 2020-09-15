@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 
-import { NavItem } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import format from 'date-fns/format';
-import history from '../helpers/history';
 
 import Map from './Map';
 import Loader from './reusable/Loader';
@@ -179,11 +178,9 @@ class Active extends Component {
             <div className="active-travellers" style={{ textAlign: 'center' }}>
               {this.state.travellers.map((traveller, i) => {
                 return (
-                  <NavItem
+                  <Link
                     key={i}
-                    onClick={() => {
-                      history.push(`/na/${traveller.userId}`);
-                    }}
+                    to={`/na/${traveller.userId}`}
                   >
                     {traveller.color !== grey ? (
                       <div
@@ -222,7 +219,7 @@ class Active extends Component {
                         </p>
                       </div>
                     )}
-                  </NavItem>
+                  </Link>
                 );
               })}
             </div>

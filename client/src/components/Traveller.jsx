@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import Map from './Map';
 import Loader from './reusable/Loader';
@@ -254,7 +255,7 @@ class Traveller extends Component {
             </div>
 
             <div className="na-ceste-traveller-sort" >
-              Zoradiť: <a href="#" onClick={this.handleOrderClick}>{this.state.orderFromOld ? " od najnovšie" : " od najstaršie"} </a>           
+              Zoradiť: <Link to="#" onClick={this.handleOrderClick}>{this.state.orderFromOld ? " od najnovšie" : " od najstaršie"}</Link>           
             </div>
 
             <div className="na-ceste-traveller-msgs">
@@ -299,7 +300,7 @@ class Traveller extends Component {
                       <div className="red-stripe" />
                       <p style={{ display: 'inline-block' }}>
                         {`${message.date} ${message.username} `}
-                        <a href={`#${message.id}`} className="traveller-message-link" title="odkaz na správu">🔗</a>
+                        <Link to={`#${message.id}`} className="traveller-message-link" title="odkaz na správu">🔗</Link>
                       </p>
                       <p dangerouslySetInnerHTML={{ __html: message.text }} />
                     </div>
@@ -323,7 +324,7 @@ class Traveller extends Component {
                         style={{ color: '#ccc2c2' }}
                       />
                       {` ${message.date} ${message.username} `}
-                      <a href={`#${message.id}`} className="traveller-comment-link" title="odkaz na komentár">🔗</a>
+                      <Link to={`#${message.id}`} className="traveller-comment-link" title="odkaz na komentár">🔗</Link>
                     </p>
                     <p dangerouslySetInnerHTML={{ __html: message.text }} />
                   </div>

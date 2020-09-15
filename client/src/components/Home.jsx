@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-
-import { NavItem } from 'react-bootstrap';
-import history from '../helpers/history';
-
 import Loader from './reusable/Loader';
+import { Link } from 'react-router-dom';
 
 class Home extends Component {
   constructor(props) {
@@ -42,29 +39,21 @@ class Home extends Component {
               return (
                 <div id={`home${i + 1}`} key={i}>
                   <div className="article-div">
-                    <NavItem
+                    <Link
                       className="no-decoration"
-                      onClick={() => {
-                        history.push(
-                          `/pred/articles/article/${article.sql_article_id}`
-                        );
-                      }}
+                      to={`/pred/articles/article/${article.sql_article_id}`}
                     >
                       <h2 className="no-decoration">{article.title}</h2>
-                    </NavItem>
+                    </Link>
                     <div
                       className={`home${i + 1}`}
                       dangerouslySetInnerHTML={introtext()}
                     />
-                    <NavItem
-                      onClick={() => {
-                        history.push(
-                          `/pred/articles/article/${article.sql_article_id}`
-                        );
-                      }}
+                     <Link
+                      to={`/pred/articles/article/${article.sql_article_id}`}
                     >
                       Čítaj viac...
-                    </NavItem>
+                    </Link>
                   </div>
                 </div>
               );

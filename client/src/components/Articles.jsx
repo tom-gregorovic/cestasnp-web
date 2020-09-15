@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Button, NavItem } from 'react-bootstrap';
-import history from '../helpers/history';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import Loader from './reusable/Loader';
 import PaginationAdvanced from './PaginationAdvanced';
@@ -76,7 +76,7 @@ class Articles extends Component {
     this.handlePageSelect = this.handlePageSelect.bind(this);
     this.handleCategorySelect = this.handleCategorySelect.bind(this);
     this.handleFilterClick = this.handleFilterClick.bind(this);
-  }
+  }  
 
   componentDidMount() {
     const { filters, categories } = this.state;
@@ -148,7 +148,7 @@ class Articles extends Component {
     }
   }
 
-  handlePageSelect(eventKey) {
+  handlePageSelect(eventKey) {    
     const filter = this.state.filters.join('+');
     if (this.state.filters.length === 0) {
       window.location.assign(`/pred/articles/${eventKey}`);
@@ -229,26 +229,16 @@ class Articles extends Component {
               };
               return (
                 <div key={i} className="article-div">
-                  <NavItem
+                  <Link
                     className="no-decoration"
-                    onClick={() => {
-                      history.push(
-                        `/pred/articles/article/${article.sql_article_id}`
-                      );
-                    }}
+                    to={`/pred/articles/article/${article.sql_article_id}`}
                   >
                     <h2 className="no-decoration">{article.title}</h2>
-                  </NavItem>
+                  </Link>
                   <div dangerouslySetInnerHTML={introtext()} />
-                  <NavItem
-                    onClick={() => {
-                      history.push(
-                        `/pred/articles/article/${article.sql_article_id}`
-                      );
-                    }}
-                  >
+                  <Link to={`/pred/articles/article/${article.sql_article_id}`}>
                     Čítaj viac...
-                  </NavItem>
+                  </Link>
                 </div>
               );
             })}

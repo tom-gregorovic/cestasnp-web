@@ -1,8 +1,6 @@
 import React from 'react';
-import { Router, Switch, Route } from 'react-router';
-
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import LogRocket from 'logrocket';
-import history from './helpers/history';
 
 import Navigation from './components/Navigation';
 import Archive from './components/Archive';
@@ -17,18 +15,20 @@ import Active from './components/Active';
 import Cookies from './components/Cookies';
 import Account from './components/Account/index';
 import { AuthProvider } from './components/AuthContext';
+import ScrollToTop from './components/reusable/ScrollToTop';
 
 LogRocket.init('2szgtb/cestasnp-web');
 
 const CestaSNP = () => (
-  <div className="app">
-    <AuthProvider>
-      <div className="app-header">
-        <Navigation />
-      </div>
-      <div className="app-body">
-        <div className="content-wrap">
-          <Router history={history}>
+  <BrowserRouter>
+    <ScrollToTop />
+    <div className="app">
+      <AuthProvider>
+        <div className="app-header">
+          <Navigation />
+        </div>
+        <div className="app-body">
+          <div className="content-wrap">          
             <Switch>
               <Route exact path="/" component={Home} />
               <Route
@@ -48,12 +48,12 @@ const CestaSNP = () => (
               <Route exact path="/cookies" component={Cookies} />
               <Route exact path="/ucet" component={Account} />
               <Route path="*" component={NotFound} />
-            </Switch>
-          </Router>
+            </Switch>          
+          </div>
         </div>
-      </div>
-    </AuthProvider>
-  </div>
+      </AuthProvider>
+    </div>
+  </BrowserRouter>
 );
 
 export default CestaSNP;

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { NavItem } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import Loader from './reusable/Loader';
 import NotFound from './reusable/NotFound';
 import { sortByDateDesc } from '../helpers/helpers';
-
-import history from '../helpers/history';
 
 class Archive extends Component {
   constructor(props) {
@@ -79,13 +77,9 @@ class Archive extends Component {
                     <div className="archived-traveller-text">
                       <p dangerouslySetInnerHTML={{ __html: traveller.text }} />
                     </div>
-                    <NavItem
-                      onClick={() => {
-                        history.push(`/na/${traveller.userId}#from-old`);
-                      }}
-                    >
+                    <Link to= {`/na/${traveller.userId}#from-old`}>
                       Sleduj celé putovanie...
-                    </NavItem>
+                    </Link>
                   </div>
                 );
               })}
@@ -113,13 +107,9 @@ class Archive extends Component {
                           dangerouslySetInnerHTML={{ __html: traveller.text }}
                         />
                       </div>
-                      <NavItem
-                        onClick={() => {
-                          history.push(`/na/${traveller.userId}#from-old`);
-                        }}
-                      >
+                      <Link to={`/na/${traveller.userId}#from-old`}>
                         Sleduj celé putovanie...
-                      </NavItem>
+                      </Link>
                     </div>
                   );
                 })}

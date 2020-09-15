@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { Navbar, Nav, NavDropdown, NavItem } from 'react-bootstrap';
-import history from '../helpers/history';
+import { Navbar, Nav, NavDropdown, NavItem, MenuItem } from 'react-bootstrap';
+import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap'
 import logo_screen from '../../public/img/logo_screen.png';
 import logo_mobile from '../../public/img/logo_mobile.png';
 import { AuthContext } from './AuthContext';
@@ -22,12 +22,10 @@ const Navigation = () => {
     <Navbar inverse collapseOnSelect>
       <Navbar.Header>
         <Navbar.Brand>
+        <IndexLinkContainer to={ROUTES.domov}>
           <div
             title="Domov"
             className="logo-position-mobile"
-            onClick={() => {
-              history.push(ROUTES.domov);
-            }}
           >
             <img
               src={logo_mobile}
@@ -35,94 +33,79 @@ const Navigation = () => {
               alt="Cesta SNP logo pre mobil"
             />
           </div>
+          </IndexLinkContainer>
+          <IndexLinkContainer to={ROUTES.domov}>
           <div
             title="Domov"
             className="logo-position-screen"
-            onClick={() => {
-              history.push(ROUTES.domov);
-            }}
           >
             <img
               src={logo_screen}
               className="logo-screen"
               alt="Cesta SNP logo pre obrazovku"
             />
-          </div>
+          </div></IndexLinkContainer>
         </Navbar.Brand>
         <Navbar.Toggle />
       </Navbar.Header>
       <Navbar.Collapse>
         <Nav pullRight>
+        <IndexLinkContainer to={ROUTES.domov}>
           <NavItem
             eventKey={1}
             title="Domov"
-            onClick={() => {
-              history.push(ROUTES.domov);
-            }}
           >
             Domov
-          </NavItem>
+          </NavItem></IndexLinkContainer>
 
           <NavDropdown eventKey={2} title="Pred cestou" id="basic-nav-dropdown">
+          <LinkContainer to={ROUTES.clanky}>
             <NavItem
               eventKey={2.1}
               title="Články"
-              onClick={() => {
-                history.push(ROUTES.clanky);
-              }}
             >
               Články
-            </NavItem>
+            </NavItem></LinkContainer>
+            <LinkContainer to={ROUTES.pois}>
             <NavItem
               eventKey={2.2}
               title="Dôležité miesta"
-              onClick={() => {
-                history.push(ROUTES.pois);
-              }}
             >
               Dôležité miesta
-            </NavItem>
+            </NavItem></LinkContainer>
           </NavDropdown>
 
-          <NavItem
+<LinkContainer to={ROUTES.naCeste}>
+          <MenuItem
             eventKey={3}
             title="LIVE sledovanie"
-            onClick={() => {
-              history.push(ROUTES.naCeste);
-            }}
           >
             LIVE sledovanie
-          </NavItem>
+          </MenuItem></LinkContainer>
 
-          <NavItem
+          <LinkContainer to={ROUTES.archiv}>
+          <NavItem as={LinkContainer}
             eventKey={5}
             title="Archív"
-            onClick={() => {
-              history.push(ROUTES.archiv);
-            }}
           >
             Archív
-          </NavItem>
+          </NavItem></LinkContainer>
 
+          <LinkContainer to={ROUTES.kontakt}>
           <NavItem
             eventKey={6}
             title="Kontakt"
-            onClick={() => {
-              history.push(ROUTES.kontakt);
-            }}
           >
             Kontakt
-          </NavItem>
+          </NavItem></LinkContainer>
 
+<LinkContainer to={ROUTES.mojaCesta}>
           <NavItem
             eventKey={4}
             title="Moja cesta"
-            onClick={() => {
-              history.push(ROUTES.mojaCesta);
-            }}
           >
             {!authData.isAuth ? 'Prihlásiť sa' : 'Poslať správu'}
-          </NavItem>
+          </NavItem></LinkContainer>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
