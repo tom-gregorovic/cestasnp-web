@@ -19,14 +19,15 @@ class CloudinaryWidget extends React.Component {
         sources: ['local', 'camera'],
         multiple: false,
         maxImageWidth: 1600,
+        maxImageHeight: 1600,
         resourceType: 'image',
         cropping: false,
         tags: ['live_sledovanie'],
         public_id: `${this.props.uid}_${Date.now()}`,
         clientAllowedFormats: ['png', 'jpg', 'jpeg'],
         thumbnailTransformation: [
-          { width: 248, height: 140, crop: 'fill' },
-          { width: 800, height: 400, crop: 'fill' }
+          { width: 248, height: 140, crop: 'fit' },
+          { width: 800, height: 400, crop: 'fit' }
         ]
       },
       (error, result) => {
