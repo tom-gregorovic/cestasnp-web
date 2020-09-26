@@ -26,8 +26,8 @@ class CloudinaryWidget extends React.Component {
         public_id: `${this.props.uid}_${Date.now()}`,
         clientAllowedFormats: ['png', 'jpg', 'jpeg'],
         thumbnailTransformation: [
-          { width: 248, height: 140, crop: 'fit' },
-          { width: 800, height: 400, crop: 'fit' }
+          { width: 248, height: 140, crop: 'limit' },
+          { width: 800, height: 400, crop: 'limit' }
         ]
       },
       (error, result) => {

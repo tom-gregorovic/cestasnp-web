@@ -274,6 +274,7 @@ class Message extends Component {
             {this.state.img ? (
               <>
                 <img
+                  className="message-added-image"
                   src={this.state.img.secure_url}
                   alt="nahrana fotka z cesty"
                 />
