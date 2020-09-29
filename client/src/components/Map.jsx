@@ -124,9 +124,9 @@ class Map extends Component {
       this.props.stops.forEach(stop => {
         if (stop.type === 'message') {
           const icon = L.divIcon({
-            html: `<img src=${defaultPin} alt="Ukazovatel na mape" class="mapMarker"/>`,
-            iconSize: [32, 32],
-            iconAnchor: [16, 32]
+            html: `<i class="fas fa-map-marker-alt mapMarker"/>`,
+            iconSize: [24, 24],
+            iconAnchor: [12, 24]
           });
           const marker = L.marker([stop.lat, stop.lon], { icon }).addTo(map);
           marker.bindPopup(`<p>${dateTimeToStr(stop.date)}</p>
@@ -143,9 +143,9 @@ class Map extends Component {
       this.props.travellers.forEach(trvlr => {
         if (trvlr.lastMessage && trvlr.color !== '#b19494') {
           const icon = L.divIcon({
-            html: `<img src=${trvlr.pin} alt="Ukazovatel na mape" class="mapMarker"/>`,
-            iconSize: [32, 32],
-            iconAnchor: [16, 32]
+            html: `<i class="fas fa-map-marker-alt mapMarker" style="color: ${trvlr.color}"/>`,
+            iconSize: [24, 24],
+            iconAnchor: [12, 24]
           });
           const marker = L.marker(
             [trvlr.lastMessage.lat, trvlr.lastMessage.lon],

@@ -200,11 +200,7 @@ class Active extends Component {
                           }}
                         >
                           {traveller.meno}{' '}
-                          <img
-                            src={traveller.pin}
-                            className="mapMarker"
-                            alt="Vzor ukazovatela"
-                          />
+                          <i class="fas fa-map-marker-alt mapMarker" style={{ color: traveller.color }} />
                         </p>
                       </div>
                     ) : (
