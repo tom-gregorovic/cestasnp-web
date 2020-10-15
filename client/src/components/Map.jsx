@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet.markercluster';
 import devinDukla from '../geojson/devin_dukla.json';
 import chata from '../../public/img/chata.png';
 import potraviny from '../../public/img/potraviny.png';
@@ -75,6 +76,13 @@ class Map extends Component {
       }
     }).addTo(map);
 
+    const markers = L.markerClusterGroup({
+      showCoverageOnHover: false,
+      maxClusterRadius: 12,
+      iconCreateFunction: function(cluster) {
+        return L.divIcon({ html: '<div class="mapMarkers">' + cluster.getChildCount() + '</div>' });
+      }});
+
     // / DOLEZITE MIESTA
     if (this.props.pois && this.props.pois.length > 0) {
       this.props.pois.forEach(poi => {
@@ -112,7 +120,7 @@ class Map extends Component {
         });
         const marker = L.marker([poi.coordinates[1], poi.coordinates[0]], {
           icon
-        }).addTo(map);
+        }).addTo(markers);
         marker.bindPopup(`<h4>${poi.name}</h4>
           <p>GPS: ${poi.coordinates[1]}, ${poi.coordinates[0]}</p>
           <p>${poi.text}</p>`);
@@ -128,7 +136,7 @@ class Map extends Component {
             iconSize: [24, 24],
             iconAnchor: [12, 24]
           });
-          const marker = L.marker([stop.lat, stop.lon], { icon }).addTo(map);
+          const marker = L.marker([stop.lat, stop.lon], { icon }).addTo(markers);
           marker.bindPopup(`<p>${dateTimeToStr(stop.date)}</p>
           <p>${stop.text}</p>`);
         }
@@ -152,7 +160,7 @@ class Map extends Component {
             {
               icon
             }
-          ).addTo(map);
+          ).addTo(markers);
           marker.bindPopup(`
           <p><b><a href='/na/${trvlr.userId}' style={text-decoration: none;}>${trvlr.meno}</a></b></p>
           <p>${dateTimeToStr(trvlr.lastMessage.pub_date)}</p>
@@ -160,6 +168,8 @@ class Map extends Component {
         }
       });
     }
+
+    map.addLayer(markers);
 
     L.tileLayer(config.tileLayer.uri, config.tileLayer.params).addTo(map);
     this.setState({ map });

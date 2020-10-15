@@ -704,6 +704,18 @@ nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-
   vertical-align: bottom;
 }
 
+.mapMarkers {
+  display: inline-block;
+  min-height: 32px;
+  min-width: 32px;
+  background-color: white;
+  border: 4px solid red;
+  border-radius: 50%;
+  line-height: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
 /***    ACTIVE      ***/
 /**********************/
 /***   TRAVELLER    ***/
