@@ -2,6 +2,7 @@ const express = require('express');
 const sanitize = require('mongo-sanitize');
 const bodyParser = require('body-parser');
 const DB = require('../db/db');
+const { cache } = require('../util/cacheUtils');
 
 const query = new DB();
 const router = express.Router();
@@ -56,7 +57,7 @@ router.get('/:page', (req, res) => {
 });
 
 // returns single article by ID
-router.get('/article/:articleId', (req, res) => {
+router.get('/article/:articleId', cache(60 * 60), (req, res) => {
   const articleId = sanitize(parseInt(req.params.articleId, 10));
   query
     .findBy('articles', { sql_article_id: articleId })
@@ -102,7 +103,7 @@ router.put('/increase_article_count', (req, res) => {
 });
 
 // returns 3 newest articles for homepage
-router.get('/for/home', (req, res) => {
+router.get('/for/home', cache(60 * 60), (req, res) => {
   query.newestSorted(
     'articles',
     ORDER.newestFirst,

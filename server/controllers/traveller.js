@@ -7,6 +7,7 @@ const moment = require('moment');
 const request = require('request');
 const DB = require('../db/db');
 const checkToken = require('../util/checkToken');
+const { cache } = require('../util/cacheUtils');
 
 const db = new DB();
 const router = express.Router();
@@ -66,7 +67,7 @@ router.get('/finishedTravellers', (req, res) => {
     });
 });
 
-router.get('/activeTravellersWithLastMessage', (req, res) => {
+router.get('/activeTravellersWithLastMessage', cache(10 * 60), (req, res) => {
   db.findBy('traveler_details', { finishedTracking: false })
     .then(activeTravellers => {
       var activeTravellersIds = activeTravellers.map(({user_id}) => user_id);
