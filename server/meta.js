@@ -14,11 +14,23 @@ const escape = (html) => {
 }
 
 const escapeImg = (img) => {
-  if (img && img.indexOf('res.cloudinary.com') === -1) {
-    return escape(`https://res.cloudinary.com/cestasnp-sk/image/upload/v1520586674/img/sledovanie/${img}`);
+  if (img && typeof img == "string") {
+    if (img != "None") {
+      if (img.indexOf('res.cloudinary.com') === -1) {
+        return escape(`https://res.cloudinary.com/cestasnp-sk/image/upload/v1520586674/img/sledovanie/${img}`);
+      } else {
+        return escape(img);
+      }
+    }
+
+    return "";
+  }
+  
+  if (img && img.secure_url) {
+    return escape(img.secure_url);
   }
 
-  return escape(img);
+  return "";  
 }
 
 const escapeDate = (date) => {
