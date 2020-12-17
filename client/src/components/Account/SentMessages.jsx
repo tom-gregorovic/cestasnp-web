@@ -3,6 +3,7 @@ import { dateTimeToStr } from '../../helpers/helpers';
 import { AuthContext } from '../AuthContext';
 import ConfirmBox from '../reusable/ConfirmBox';
 import { A } from '../reusable/Navigate';
+import DOMPurify from 'dompurify';
 
 const SentMessages = (props) => {
   const authData = useContext(AuthContext);
@@ -141,13 +142,8 @@ class SentMessagesWithAuth extends Component {
                 // );
                 // }}
               />
-            )}
-            <div className="red-stripe" />
-            <p style={{ display: 'inline-block' }}>
-              {dateTimeToStr(message.pub_date)} 
-              {' '}<A href={`/na/${this.state.userId}#${message._id}`} className="traveller-message-link" title="odkaz na správu">🔗</A>
-            </p>            
-            <p dangerouslySetInnerHTML={{ __html: message.text }} />
+            )}      
+            <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(message.text) }} />
           </div>);}
         )}
 
