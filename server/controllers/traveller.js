@@ -4,7 +4,7 @@ const express = require('express');
 const sanitize = require('mongo-sanitize');
 const moment = require('moment');
 
-const request = require('request');
+const fetch = require('node-fetch');
 const DB = require('../db/db');
 const checkToken = require('../util/checkToken');
 
@@ -188,23 +188,25 @@ router.post('/addComment', (req, res) => {
   // + '&remoteip=' +
   // req.connection.remoteAddress;
 
-  const processAddComment = (callback) =>
-    {
+  const processAddComment = (callback) => {
       if (req.body.uid) {
         checkToken(req, res, req.body.uid, callback);
       } else {
-       request(verificationURL, (error, response, body) => {
-          // TODO - new cost
-          // eslint-disable-next-line no-param-reassign
-          body = JSON.parse(body);
-          if (body.success) {   
-            callback();
-          } else {
-            res.json({ responseError: 'Failed captcha verification' });
-          }
-        });
+        fetch(verificationURL)
+          .then(res => res.json())
+          .then(body => {
+            if (body.success) {   
+              callback();
+            } else {
+              res.json({ responseError: 'Failed captcha verification' });
+            }
+          })
+          .catch(error => {
+            console.error(error);
+            res.json({ responseError: 'Failed captcha verification' })
+          });
       }
-    };
+  };
 
     processAddComment(() =>
     {
