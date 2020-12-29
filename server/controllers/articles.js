@@ -58,13 +58,16 @@ router.get('/:page', (req, res) => {
 // returns single article by ID
 router.get('/article/:articleId', (req, res) => {
   const articleId = sanitize(parseInt(req.params.articleId, 10));
+
   query
-    .findBy('articles', { sql_article_id: articleId })
+    .findByWithDB(req.app.locals.db, 'articles', { sql_article_id: articleId })
     .then(results => {
       res.json(results);
     })
-    .catch(e => {
-      console.error('error ', e);
+    .catch(error => {
+      console.error(error);
+
+      res.status(500).json({ error: error.toString() });
     });
 });
 
@@ -103,14 +106,14 @@ router.put('/increase_article_count', (req, res) => {
 
 // returns 2 newest articles for homepage
 router.get('/for/home', (req, res) => {
-  query.newestSorted(
-    'articles',
-    ORDER.newestFirst,
-    results => {
-      res.json(results);
-    },
-    filterBy
-  );
+  query.newestSorted(req.app.locals.db,
+    'articles', ORDER.newestFirst, filterBy, 2)
+  .then(results => res.json(results))
+  .catch(error => {
+    console.error(error);
+
+    res.status(500).json({ error: error.toString() });
+  });
 });
 
 module.exports = router;
