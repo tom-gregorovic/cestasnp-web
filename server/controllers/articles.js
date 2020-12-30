@@ -2,6 +2,7 @@ const express = require('express');
 const sanitize = require('mongo-sanitize');
 const bodyParser = require('body-parser');
 const DB = require('../db/db');
+const promiseAsJson = require('../util/promiseUtils');
 
 const query = new DB();
 const router = express.Router();
@@ -37,38 +38,25 @@ router.use(bodyParser.json());
 
 // count the entire article collection
 router.get('/', (req, res) => {
-  query.countCollection('articles', filterBy, results => {
-    res.json(results);
-  });
+  promiseAsJson(() => query.countCollection(req.app.locals.db, 'articles', filterBy), res);
 });
 
 // operates pagination for all articles
 router.get('/:page', (req, res) => {
-  query.nextSorted(
+  promiseAsJson(() => query.nextSorted(
+    req.app.locals.db, 
     'articles',
     ORDER.newestFirst,
     sanitize(req.params.page),
-    results => {
-      res.json(results);
-    },
     filterBy
-  );
+  ), res);
 });
 
 // returns single article by ID
 router.get('/article/:articleId', (req, res) => {
   const articleId = sanitize(parseInt(req.params.articleId, 10));
 
-  query
-    .findByWithDB(req.app.locals.db, 'articles', { sql_article_id: articleId })
-    .then(results => {
-      res.json(results);
-    })
-    .catch(error => {
-      console.error(error);
-
-      res.status(500).json({ error: error.toString() });
-    });
+  promiseAsJson(() => query.findByWithDB(req.app.locals.db, 'articles', { sql_article_id: articleId }), res);
 });
 
 // returns all articles matching category
@@ -76,9 +64,8 @@ router.get('/category/:category', (req, res) => {
   const filters = filtersSplit(sanitize(req.params.category));
   const finalFilter = {};
   finalFilter.$and = filters;
-  query.countCollection('articles', finalFilter, results => {
-    res.json(results);
-  });
+
+  promiseAsJson(() => query.countCollection(req.app.locals.db, 'articles', finalFilter), res);
 });
 
 // returns articles matching category on certain page
@@ -86,15 +73,13 @@ router.get('/category/:category/:page', (req, res) => {
   const filters = filtersSplit(sanitize(req.params.category));
   const finalFilter = {};
   finalFilter.$and = filters;
-  query.nextSorted(
-    'articles',
+
+  promiseAsJson(() => query.nextSorted(
+    req.app.locals.db, 'articles',
     ORDER.newestFirst,
     sanitize(req.params.page),
-    results => {
-      res.json(results);
-    },
     finalFilter
-  );
+  ), res);
 });
 
 // increases article count
@@ -106,14 +91,8 @@ router.put('/increase_article_count', (req, res) => {
 
 // returns 2 newest articles for homepage
 router.get('/for/home', (req, res) => {
-  query.newestSorted(req.app.locals.db,
-    'articles', ORDER.newestFirst, filterBy, 2)
-  .then(results => res.json(results))
-  .catch(error => {
-    console.error(error);
-
-    res.status(500).json({ error: error.toString() });
-  });
+  promiseAsJson(() => query.newestSorted(req.app.locals.db,
+    'articles', ORDER.newestFirst, filterBy, 2), res);
 });
 
 module.exports = router;

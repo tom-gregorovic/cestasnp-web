@@ -20,6 +20,10 @@ class Article extends Component {
     fetch(this.state.url)
       .then(resp => resp.json())
       .then(data => {
+        if (!data || data.length == 0) {
+          throw "Článok sme nenašli.";
+        }
+
         this.setState({
           article: data,
           loading: false
@@ -33,7 +37,9 @@ class Article extends Component {
             throw err;
           });
       })
-      .catch(() => {
+      .catch(error => {
+        console.error(error);
+        
         this.setState({
           article: [{ title: '404', fulltext: 'Článok sme nenašli :(' }],
           loading: false
