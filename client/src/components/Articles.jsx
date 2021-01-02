@@ -6,6 +6,7 @@ import ArticleFilter from './ArticleFilter';
 import { A, navigate } from './reusable/Navigate';
 import DocumentTitle from 'react-document-title';
 import * as Constants from './Constants';
+import ButtonReadMore from './reusable/ButtonReadMore';
 
 const articleCategories = [
   { tag: 'vsetky', text: 'Všetky' },
@@ -204,6 +205,11 @@ class Articles extends Component {
   }
 
   render() {
+    const getArticleImage = (intro) => {
+      const res = intro && intro.match(/["'](https:\/\/res.cloudinary.com\/.*?)["']/);
+      return res && res.length > 1 ? res[1] : null;
+    };
+
     return (
       <div id="Articles">
         <DocumentTitle title={`Články${Constants.WebTitleSuffix}`} />
@@ -246,18 +252,25 @@ class Articles extends Component {
               const introtext = () => {
                 return { __html: article.introtext };
               };
+              const imgUrl = getArticleImage(article.introtext);
+
               return (
                 <div key={i} className="article-div">
+                  {!!imgUrl && <div className="article-image before" style={{ backgroundImage: `url("${imgUrl}")` }}/>}
+                      
                   <A
                     className="no-decoration"
                     href={`/pred/articles/article/${article.sql_article_id}`}
                   >
                     <h2 className="no-decoration">{article.title}</h2>
                   </A>
-                  <div dangerouslySetInnerHTML={introtext()} />
-                  <A href={`/pred/articles/article/${article.sql_article_id}`} >
-                    Čítaj viac...
-                  </A>
+                  
+                  {!!imgUrl && <div className="article-image" style={{ backgroundImage: `url("${imgUrl}")` }}/>}
+                  
+                  <div className="article-text-col">
+                    <div className="article-text">{article.introtext.replaceAll(/<[^>]+>/g, '')}</div>
+                    <ButtonReadMore href={`/pred/articles/article/${article.sql_article_id}`} />
+                  </div>
                 </div>
               );
             })}
