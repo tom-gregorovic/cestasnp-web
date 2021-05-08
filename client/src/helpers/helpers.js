@@ -231,9 +231,26 @@ const getArticleImage = (intro) => {
   return fixImageUrl(url, 'c_fill,f_auto,w_240,h_240');
 }
 
+const isImageValid = (image) => image && image != 'None';
+
+const fixImage = (image, code = null) => {
+  if (!isImageValid(image)) {
+    return "";
+  }
+
+  if (typeof image == "string") {  
+    return fixImageUrl(image.indexOf('res.cloudinary.com') === -1 
+      ? `https://res.cloudinary.com/cestasnp-sk/image/upload/v1520586674/img/sledovanie/${image}`
+      : image, code);
+  } else {
+    return fixImageUrl(image.secure_url, code);
+  }
+}
+
 const fixImageUrl = (url, code) => {
-  return (url || '').replace(/https:\/\/res\.cloudinary\.com\/cestasnp-sk\/image\/upload(\/[^/]+?)?\/v/, 
-    `https://res.cloudinary.com/cestasnp-sk/image/upload${code ? ("/" + code) : ""}/v`);
+  return code == null ? (url || '')
+    : (url || '').replace(/https:\/\/res\.cloudinary\.com\/cestasnp-sk\/image\/upload(\/[^/]+?)?\/v/, 
+      `https://res.cloudinary.com/cestasnp-sk/image/upload${code ? ("/" + code) : ""}/v`);
 };
 
 const getArticleCategoryText = (tag) => {
@@ -244,4 +261,4 @@ const getArticleCategoryText = (tag) => {
 
 export { sortByDateDesc, sortByDateAsc, sortByDate, dateToStr, dateTimeToStr, parseDate,
   escapeHtml, htmlSanitize, htmlSimpleSanitize, htmlLineSimpleSanitize, htmlClean, htmlLineClean,
-  getArticleState, getArticleStateIcon, getArticleImage, fixImageUrl, getArticleCategoryText };
+  getArticleState, getArticleStateIcon, getArticleImage, isImageValid, fixImage, fixImageUrl, getArticleCategoryText };
